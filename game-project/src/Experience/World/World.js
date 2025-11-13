@@ -52,14 +52,12 @@ export default class World {
             this.fox = new Fox(this.experience)
             this.robot = new Robot(this.experience)
 
+            // ✨ Hacer que el zorro siga al robot
+            this.fox.setTarget(this.robot)
+
             // Enemigos múltiples: plantilla y spawn lejos del jugador
             this.enemyTemplate = this.resources.items.enemyModel
             console.log("🎬 Animaciones del modelo enemigo:", this.enemyTemplate.animations.map(a => a.name))
-
-
-            const enemiesCountEnv = parseInt(import.meta.env.VITE_ENEMIES_COUNT || '3', 10)
-            const enemiesCount = Number.isFinite(enemiesCountEnv) && enemiesCountEnv > 0 ? enemiesCountEnv : 3
-            this.spawnEnemies(enemiesCount)
 
             this.experience.vr.bindCharacter(this.robot)
             this.thirdPersonCamera = new ThirdPersonCamera(this.experience, this.robot.group)
@@ -437,6 +435,10 @@ export default class World {
             this.totalDefaultCoins = this.loader.prizes.filter(p => p.role === "default").length;
             console.log(`🎯 Total de monedas default para el nivel ${level}: ${this.totalDefaultCoins}`);
 
+            // ✨ CORRECCIÓN: Generar enemigos específicos para el nivel que se está cargando
+            const enemiesCount = this.levelManager.getEnemiesCount(level);
+            this.spawnEnemies(enemiesCount);
+
             this.resetRobotPosition(spawnPoint);
             console.log(`✅ Nivel ${level} cargado con spawn en`, spawnPoint);
         } catch (error) {
@@ -530,6 +532,12 @@ export default class World {
             });
             this.loader.prizes = [];
             console.log('🎯 Premios del nivel anterior eliminados correctamente.');
+        }
+
+        // ✨ CORRECCIÓN: Asegurarse de eliminar los enemigos de la escena anterior
+        if (this.enemies?.length) {
+            this.enemies.forEach(e => e?.destroy?.());
+            this.enemies = [];
         }
 
         this.finalPrizeActivated = false

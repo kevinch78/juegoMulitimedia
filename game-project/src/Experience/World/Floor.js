@@ -16,7 +16,7 @@ export default class Floor {
     }
 
     setGeometry() {
-        this.size = { width: 300, height: 3, depth: 500 } // ⬅️ Ahora el piso tiene grosor
+        this.size = { width: 150, height: 2, depth: 150 } // ⬅️ Ahora el piso tiene grosor
         this.geometry = new THREE.BoxGeometry(
             this.size.width,
             this.size.height,

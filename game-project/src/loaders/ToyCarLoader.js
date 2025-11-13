@@ -178,13 +178,27 @@ export default class ToyCarLoader {
                 }
             });
 
-            //  Manejo de carteles: aplicar textura a meshes
-            this._applyTextureToMeshes(
-                model,
-                '/textures/ima1.jpg',
-                (child) => child.name === 'Cylinder001' || (child.name && child.name.toLowerCase().includes('cylinder')),
-                { rotation: -Math.PI / 2, center: { x: 0.5, y: 0.5 }, mirrorX: true }
-            );
+            // ✨ NUEVA LÓGICA PARA CARTELES PERSONALIZADOS
+            if (block.name.toLowerCase().startsWith('sign_')) {
+                // Extraer el número del cartel del nombre. Ej: "sign_2_lev1" -> "2"
+                const nameParts = block.name.split('_');
+                const signNumber = nameParts.length > 1 ? parseInt(nameParts[1], 10) : null;
+
+                if (signNumber && signNumber > 0) {
+                    // Construir la ruta a la textura específica del cartel
+                    const texturePath = `/textures/signs/sign_${signNumber}.png`; // ✨ CORRECCIÓN: Usar .png
+                    
+                    console.log(`🎨 Aplicando textura de cartel ${texturePath} a ${block.name}`);
+
+                    // Aplicar la textura al mesh principal del modelo del cartel
+                    this._applyTextureToMeshes(
+                        model,
+                        texturePath,
+                        (child) => child.isMesh, // Aplica a la primera malla que encuentre
+                        { rotation: -Math.PI / 2, center: { x: 0.5, y: 0.5 }, mirrorX: true }
+                    );
+                }
+            }
 
             //  Integración especial para modelos baked
             if (block.name.includes('baked')) {
