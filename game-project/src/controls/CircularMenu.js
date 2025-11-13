@@ -1,11 +1,14 @@
 import gsap from 'gsap'
 
 export default class CircularMenu {
-  constructor({ container, vrIntegration, onAudioToggle, onWalkMode, onFullscreen, onCancelGame }) {
+  constructor({ container, vrIntegration, onAudioToggle, onWalkMode, onFullscreen, onCancelGame, onLogout }) {
     this.container = container
     this.vrIntegration = vrIntegration
     this.isOpen = false
     this.actionButtons = []
+    
+    // Guardar onLogout como propiedad para poder actualizarlo dinámicamente
+    this.onLogout = onLogout || (() => {})
 
     // Estilo base de los botones
     const baseStyle = `
@@ -51,7 +54,8 @@ export default class CircularMenu {
       { icon: '🖥️', title: 'Pantalla Completa', onClick: onFullscreen },
       { icon: '🥽', title: 'Modo VR', onClick: () => this.vrIntegration.toggleVR() },
       { icon: '👨‍💻', title: 'Acerca de', onClick: () => this.showAboutModal() },
-      { icon: '❌', title: 'Cancelar Juego', onClick: onCancelGame }
+      { icon: '❌', title: 'Cancelar Juego', onClick: onCancelGame },
+      { icon: '🔒', title: 'Cerrar sesión', onClick: () => this.onLogout() }
     ]
 
     // HUD: Nivel
@@ -282,7 +286,9 @@ export default class CircularMenu {
     this.toggleButton?.remove()
     this.actionButtons?.forEach(btn => btn.remove())
     this.timer?.remove()
-    this.levelStatus?.remove() // ✨ Limpiar el nuevo elemento
+    this.levelStatus?.remove()
     this.status?.remove()
+    this.playersLabel?.remove()
+    this.aboutContainer?.remove()
   }
 }

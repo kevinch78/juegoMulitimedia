@@ -3,6 +3,8 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const blockRoutes = require('./routes/blockRoutes')
+const authRoutes = require('./routes/authRoutes');
+const authMiddleware = require('./middleware/authMiddleware');
 
 
 const app = express()
@@ -20,8 +22,14 @@ app.get('/', (req, res) => {
 });
 
 // Rutas
-//app.use('/blocks', blockRoutes)
-app.use('/api/blocks', blockRoutes)
+app.use('/api/auth', authRoutes);
+
+// Solo protegemos /api/blocks si está produccion (usa variable de entorno SIMPLE)
+if(process.env.REQUIRE_AUTH !== 'false') {
+  app.use('/api/blocks', authMiddleware, blockRoutes);
+} else {
+  app.use('/api/blocks', blockRoutes);
+}
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
