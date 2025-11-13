@@ -114,7 +114,8 @@ export default class Experience {
           document.exitFullscreen()
         }
       },
-      onCancelGame: () => this.tracker.handleCancelGame() // 🔴 aquí se integra la lógica central
+      onCancelGame: () => this.tracker.handleCancelGame(),
+      onLogout: () => {} // Siempre función, se sobreescribe desde App.jsx después
     })
 
     //Generar obstaculos
