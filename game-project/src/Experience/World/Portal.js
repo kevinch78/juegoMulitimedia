@@ -46,10 +46,10 @@ export default class Portal {
         this.model.position.y -= 1.2; // Bajarlo para que no flote
         this.model.position.x -= 1; // Moverlo un poco a la derecha
 
-        // ✨ LÓGICA CONDICIONAL: Rotar el portal solo si estamos en el nivel 3
-        if (this.level === 3) {
-            this.model.rotation.y = Math.PI; // Rotar 180 grados
-        }
+        // // ✨ LÓGICA CONDICIONAL: Rotar el portal solo si estamos en el nivel 3
+        // if (this.level === 3) {
+        //     this.model.rotation.y = Math.PI; // Rotar 180 grados
+        // }
 
         // ✨ LÓGICA NUEVA: Aplicar materiales a las mallas correctas, como en el ejemplo del profesor
         const bakedMesh = this.model.getObjectByName('baked')

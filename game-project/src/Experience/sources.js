@@ -2260,5 +2260,5 @@ export default [
         "name": "rueda3_material.007_0_lev3",
         "type": "gltfModel",
         "path": "/models/toycar3/rueda3_material.007_0_lev3.glb"
-    } 
+    }
 ]
