@@ -1,10 +1,5 @@
 export const sources = [
     {
-        "name": "baked_lev1",
-        "type": "gltfModel",
-        "path": "/models/toycar/baked_lev1.glb"
-    },
-    {
         "name": "bigrock4.001_lev1",
         "type": "gltfModel",
         "path": "/models/toycar/bigrock4.001_lev1.glb"
@@ -68,6 +63,21 @@ export const sources = [
         "name": "coin_structure_detailed_lev2.006_lev1",
         "type": "gltfModel",
         "path": "/models/toycar/coin_structure_detailed_lev2.006_lev1.glb"
+    },
+    {
+        "name": "cylinder.002.001_lev1",
+        "type": "gltfModel",
+        "path": "/models/toycar/cylinder.002.001_lev1.glb"
+    },
+    {
+        "name": "cylinder.002.002_lev1",
+        "type": "gltfModel",
+        "path": "/models/toycar/cylinder.002.002_lev1.glb"
+    },
+    {
+        "name": "cylinder.002_lev1",
+        "type": "gltfModel",
+        "path": "/models/toycar/cylinder.002_lev1.glb"
     },
     {
         "name": "fence_gate_left_lev1",

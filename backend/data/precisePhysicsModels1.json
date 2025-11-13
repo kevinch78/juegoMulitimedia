@@ -12,7 +12,6 @@
     "palmtree_1.008.002_lev1",
     "palmtree_1.008.003_lev1",
     "coin_structure_detailed_lev2.006_lev1",
-    "baked_lev1",
     "coin_final_structure_detailed_lev2.006.001_lev1",
     "coin_structure_detailed_lev2.006.002_lev1",
     "coin_structure_detailed_lev2.006.003_lev1",
@@ -54,5 +53,8 @@
     "lamp.001.002_lev1",
     "lamp.003.002_lev1",
     "lamp.001.003_lev1",
-    "lamp.003.003_lev1"
+    "lamp.003.003_lev1",
+    "cylinder.002_lev1",
+    "cylinder.002.001_lev1",
+    "cylinder.002.002_lev1"
 ]
