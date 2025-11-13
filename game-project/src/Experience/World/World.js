@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import Environment from './Environment.js'
 import Fox from './Fox.js'
-import Robot from './Robot.js'
+import Personaje from './Personaje.js' // ✨ 1. Importamos el nuevo personaje
 import ToyCarLoader from '../../loaders/ToyCarLoader.js'
 import Floor from './Floor.js'
 import ThirdPersonCamera from './ThirdPersonCamera.js'
@@ -50,7 +50,7 @@ export default class World {
             await this.loader.loadFromAPI()
 
             this.fox = new Fox(this.experience)
-            this.robot = new Robot(this.experience)
+            this.robot = new Personaje(this.experience) // ✨ 2. Usamos Personaje en lugar de Robot
 
             // ✨ Hacer que el zorro siga al robot
             this.fox.setTarget(this.robot)
@@ -89,43 +89,64 @@ export default class World {
         })
     }
 
-    // Crear varios enemigos en posiciones alejadas del jugador para evitar atascos iniciales
+    // ✨ MEJORA: Crear enemigos en posiciones válidas sobre el suelo usando Raycasting.
     spawnEnemies(count = 3) {
-        if (!this.robot?.body?.position) return
-        if (!this.enemyTemplate) {
-            console.warn('⚠️ Modelo de enemigo no cargado aún')
-            return
+        if (!this.robot?.body?.position || !this.floor?.mesh) {
+            console.warn('⚠️ No se puede spawnear enemigos: el robot o el suelo no están listos.');
+            return;
         }
-        
-        const playerPos = this.robot.body.position
-        const minRadius = 25
-        const maxRadius = 40
+        if (!this.enemyTemplate) {
+            console.warn('⚠️ Modelo de enemigo no cargado aún');
+            return;
+        }
 
         // Limpia anteriores si existen
         if (this.enemies?.length) {
-            this.enemies.forEach(e => e?.destroy?.())
-            this.enemies = []
+            this.enemies.forEach(e => e?.destroy?.());
+            this.enemies = [];
         }
 
+        const playerPos = this.robot.body.position;
+        const minRadius = 20; // Radio mínimo desde el jugador
+        const maxRadius = 50; // Radio máximo (ajustado al tamaño del mapa)
+        const raycaster = new THREE.Raycaster();
+        const downVector = new THREE.Vector3(0, -1, 0);
+        const floorMeshes = [this.floor.mesh]; // Objetos contra los que chocar (solo el suelo)
+
         for (let i = 0; i < count; i++) {
-            const angle = Math.random() * Math.PI * 2
-            const radius = minRadius + Math.random() * (maxRadius - minRadius)
-            const x = playerPos.x + Math.cos(angle) * radius
-            const z = playerPos.z + Math.sin(angle) * radius
-            const y = 1.5
+            let spawnPosition = null;
+            let attempts = 0;
+
+            // Intentar encontrar una posición válida hasta 20 veces
+            while (!spawnPosition && attempts < 20) {
+                const angle = Math.random() * Math.PI * 2;
+                const radius = minRadius + Math.random() * (maxRadius - minRadius);
+                const candidateX = playerPos.x + Math.cos(angle) * radius;
+                const candidateZ = playerPos.z + Math.sin(angle) * radius;
+                
+                raycaster.set(new THREE.Vector3(candidateX, 50, candidateZ), downVector); // Lanzar rayo desde arriba
+                const intersects = raycaster.intersectObjects(floorMeshes);
+
+                if (intersects.length > 0) {
+                    spawnPosition = intersects[0].point; // ¡Posición válida encontrada!
+                    spawnPosition.y += 1.0; // Pequeño offset para que no spawnee dentro del suelo
+                }
+                attempts++;
+            }
+
+            if (!spawnPosition) continue; // Si no se encontró posición, saltar a la siguiente iteración
 
             const enemy = new Enemy({
                 scene: this.scene,
                 physicsWorld: this.experience.physics.world,
                 playerRef: this.robot,
                 model: this.enemyTemplate.scene, // 👈 Pasar el .scene del GLTF
-                position: new THREE.Vector3(x, y, z),
+                position: spawnPosition,
                 experience: this.experience
             })
 
-            // Pequeño delay para que no ataquen todos a la vez
-            enemy.delayActivation = 1.0 + i * 0.5
-            this.enemies.push(enemy)
+            enemy.delayActivation = 1.0 + i * 0.5; // Pequeño delay para que no ataquen todos a la vez
+            this.enemies.push(enemy);
         }
     }
 
@@ -259,7 +280,7 @@ export default class World {
                     
                     const portalPosition = prize.pivot.position.clone();
                     if (!this.portal) {
-                        this.portal = new Portal(this.experience, portalPosition);
+                        this.portal = new Portal(this.experience, portalPosition, this.levelManager.currentLevel);
                         
                         if (window.userInteracted) {
                             this.portalSound.play();
