@@ -54,10 +54,14 @@ export default class World {
 
             // ✨ Hacer que el zorro siga al robot
             this.fox.setTarget(this.robot)
-
+ 
             // Enemigos múltiples: plantilla y spawn lejos del jugador
             this.enemyTemplate = this.resources.items.enemyModel
             console.log("🎬 Animaciones del modelo enemigo:", this.enemyTemplate.animations.map(a => a.name))
+            
+            // ✨ CORRECCIÓN FINAL: Llamar a spawnEnemies DESPUÉS de que el robot y el template existan.
+            const initialEnemiesCount = this.levelManager.getEnemiesCount(1);
+            this.spawnEnemies(initialEnemiesCount);
 
             this.experience.vr.bindCharacter(this.robot)
             this.thirdPersonCamera = new ThirdPersonCamera(this.experience, this.robot.group)

@@ -45,7 +45,7 @@ export default [
         name: 'portalTexture',
         type: 'texture',
         path: '/textures/baked.jpg'
-    },
+    },// desde aqui para abajo
     {
         "name": "bigrock4.001_lev1",
         "type": "gltfModel",
@@ -110,6 +110,21 @@ export default [
         "name": "coin_structure_detailed_lev2.006_lev1",
         "type": "gltfModel",
         "path": "/models/toycar/coin_structure_detailed_lev2.006_lev1.glb"
+    },
+    {
+        "name": "cylinder.002.001_lev1",
+        "type": "gltfModel",
+        "path": "/models/toycar/cylinder.002.001_lev1.glb"
+    },
+    {
+        "name": "cylinder.002.002_lev1",
+        "type": "gltfModel",
+        "path": "/models/toycar/cylinder.002.002_lev1.glb"
+    },
+    {
+        "name": "cylinder.002_lev1",
+        "type": "gltfModel",
+        "path": "/models/toycar/cylinder.002_lev1.glb"
     },
     {
         "name": "fence_gate_left_lev1",
@@ -320,7 +335,7 @@ export default [
         "name": "wonderwalls_secondage_lev1",
         "type": "gltfModel",
         "path": "/models/toycar/wonderwalls_secondage_lev1.glb"
-    }, //level 2
+    },
     {
         "name": "chandelier_low_chandelier1_low_0_lev2",
         "type": "gltfModel",
@@ -400,6 +415,16 @@ export default [
         "name": "columns_low_columns_low_0_lev2",
         "type": "gltfModel",
         "path": "/models/toycar2/columns_low_columns_low_0_lev2.glb"
+    },
+    {
+        "name": "cylinder.002_lev1.001_lev2",
+        "type": "gltfModel",
+        "path": "/models/toycar2/cylinder.002_lev1.001_lev2.glb"
+    },
+    {
+        "name": "cylinder.002_lev1_lev2",
+        "type": "gltfModel",
+        "path": "/models/toycar2/cylinder.002_lev1_lev2.glb"
     },
     {
         "name": "fence_gate_right.002_lev1_lev2",
@@ -512,6 +537,21 @@ export default [
         "path": "/models/toycar2/object_18_lev2.glb"
     },
     {
+        "name": "object_20_lev2",
+        "type": "gltfModel",
+        "path": "/models/toycar2/object_20_lev2.glb"
+    },
+    {
+        "name": "object_24_lev2",
+        "type": "gltfModel",
+        "path": "/models/toycar2/object_24_lev2.glb"
+    },
+    {
+        "name": "object_27_lev2",
+        "type": "gltfModel",
+        "path": "/models/toycar2/object_27_lev2.glb"
+    },
+    {
         "name": "object_29.001_lev2",
         "type": "gltfModel",
         "path": "/models/toycar2/object_29.001_lev2.glb"
@@ -612,9 +652,19 @@ export default [
         "path": "/models/toycar2/object_29_lev2.glb"
     },
     {
+        "name": "object_33_lev2",
+        "type": "gltfModel",
+        "path": "/models/toycar2/object_33_lev2.glb"
+    },
+    {
         "name": "object_35_lev2",
         "type": "gltfModel",
         "path": "/models/toycar2/object_35_lev2.glb"
+    },
+    {
+        "name": "object_37.001_lev2.001",
+        "type": "gltfModel",
+        "path": "/models/toycar2/object_37.001_lev2.001.glb"
     },
     {
         "name": "object_37.001_lev2",
@@ -655,6 +705,11 @@ export default [
         "name": "object_37_lev2",
         "type": "gltfModel",
         "path": "/models/toycar2/object_37_lev2.glb"
+    },
+    {
+        "name": "object_39.001_lev2.001",
+        "type": "gltfModel",
+        "path": "/models/toycar2/object_39.001_lev2.001.glb"
     },
     {
         "name": "object_39.001_lev2",
@@ -700,6 +755,11 @@ export default [
         "name": "object_39_lev2",
         "type": "gltfModel",
         "path": "/models/toycar2/object_39_lev2.glb"
+    },
+    {
+        "name": "object_49_lev2",
+        "type": "gltfModel",
+        "path": "/models/toycar2/object_49_lev2.glb"
     },
     {
         "name": "object_51_lev2",
@@ -762,6 +822,11 @@ export default [
         "path": "/models/toycar2/object_63_lev2.glb"
     },
     {
+        "name": "object_65.001_lev2",
+        "type": "gltfModel",
+        "path": "/models/toycar2/object_65.001_lev2.glb"
+    },
+    {
         "name": "object_65_lev2",
         "type": "gltfModel",
         "path": "/models/toycar2/object_65_lev2.glb"
@@ -822,6 +887,21 @@ export default [
         "path": "/models/toycar2/object_92_lev2.glb"
     },
     {
+        "name": "object_94.001_lev2",
+        "type": "gltfModel",
+        "path": "/models/toycar2/object_94.001_lev2.glb"
+    },
+    {
+        "name": "object_94.002.001_lev2",
+        "type": "gltfModel",
+        "path": "/models/toycar2/object_94.002.001_lev2.glb"
+    },
+    {
+        "name": "object_94.002.002_lev2",
+        "type": "gltfModel",
+        "path": "/models/toycar2/object_94.002.002_lev2.glb"
+    },
+    {
         "name": "object_94.002_lev2",
         "type": "gltfModel",
         "path": "/models/toycar2/object_94.002_lev2.glb"
@@ -840,7 +920,7 @@ export default [
         "name": "object_99_lev2",
         "type": "gltfModel",
         "path": "/models/toycar2/object_99_lev2.glb"
-    },//level3
+    },
     {
         "name": "coin_final_structure_detailed_lev2.006.005_lev1.012_lev3",
         "type": "gltfModel",
@@ -935,6 +1015,21 @@ export default [
         "name": "cube_material.002_0_lev3",
         "type": "gltfModel",
         "path": "/models/toycar3/cube_material.002_0_lev3.glb"
+    },
+    {
+        "name": "cylinder.002.001_lev3",
+        "type": "gltfModel",
+        "path": "/models/toycar3/cylinder.002.001_lev3.glb"
+    },
+    {
+        "name": "cylinder.002.002_lev3",
+        "type": "gltfModel",
+        "path": "/models/toycar3/cylinder.002.002_lev3.glb"
+    },
+    {
+        "name": "cylinder.002_lev3",
+        "type": "gltfModel",
+        "path": "/models/toycar3/cylinder.002_lev3.glb"
     },
     {
         "name": "cylinder.006_material.008_0_lev3",
@@ -1592,6 +1687,11 @@ export default [
         "path": "/models/toycar3/object_3_lev3.glb"
     },
     {
+        "name": "object_4.001.001_lev3",
+        "type": "gltfModel",
+        "path": "/models/toycar3/object_4.001.001_lev3.glb"
+    },
+    {
         "name": "object_4.001_lev3",
         "type": "gltfModel",
         "path": "/models/toycar3/object_4.001_lev3.glb"
@@ -1937,6 +2037,11 @@ export default [
         "path": "/models/toycar3/object_7.001_lev3.glb"
     },
     {
+        "name": "object_71.001.001_lev3",
+        "type": "gltfModel",
+        "path": "/models/toycar3/object_71.001.001_lev3.glb"
+    },
+    {
         "name": "object_71.001_lev3",
         "type": "gltfModel",
         "path": "/models/toycar3/object_71.001_lev3.glb"
@@ -2150,5 +2255,5 @@ export default [
         "name": "rueda3_material.007_0_lev3",
         "type": "gltfModel",
         "path": "/models/toycar3/rueda3_material.007_0_lev3.glb"
-    }
+    } 
 ]

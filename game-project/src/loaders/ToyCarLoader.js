@@ -178,13 +178,21 @@ export default class ToyCarLoader {
                 }
             });
 
-            // ✨ NUEVA LÓGICA PARA CARTELES PERSONALIZADOS
-            if (block.name.toLowerCase().startsWith('sign_')) {
-                // Extraer el número del cartel del nombre. Ej: "sign_2_lev1" -> "2"
-                const nameParts = block.name.split('_');
-                const signNumber = nameParts.length > 1 ? parseInt(nameParts[1], 10) : null;
+            // ✨ LÓGICA ADAPTADA PARA CARTELES
+            // Buscamos objetos cuyo nombre empiece con 'cylinder.' y que no sean premios.
+            const isSign = block.name.toLowerCase().startsWith('cylinder.') && !block.name.toLowerCase().startsWith('coin');
+            if (isSign) {
+                // Como no tenemos un número claro en el nombre, asignamos uno basado en los últimos dígitos.
+                // Esto es un poco frágil, pero funcionará para 'cylinder.002.001' -> 1, 'cylinder.002.002' -> 2
+                const nameParts = block.name.split('.');
+                const lastPart = nameParts[nameParts.length - 1]; // Tomamos la última parte antes de '_levX'
+                const numericPart = lastPart.split('_')[0]; // Quitamos el '_levX'
+                let signNumber = parseInt(numericPart, 10);
 
-                if (signNumber && signNumber > 0) {
+                // Si el número es mayor que la cantidad de imágenes que tenemos (4), lo reiniciamos.
+                // Ej: si el número es 5, usará la imagen 1 (5 % 4 = 1).
+                if (!isNaN(signNumber) && signNumber > 0) {
+                    signNumber = ((signNumber - 1) % 4) + 1;
                     // Construir la ruta a la textura específica del cartel
                     const texturePath = `/textures/signs/sign_${signNumber}.png`; // ✨ CORRECCIÓN: Usar .png
                     
@@ -195,7 +203,11 @@ export default class ToyCarLoader {
                         model,
                         texturePath,
                         (child) => child.isMesh, // Aplica a la primera malla que encuentre
-                        { rotation: -Math.PI / 2, center: { x: 0.5, y: 0.5 }, mirrorX: true }
+                        {
+                            flipY: false,
+                            rotation: -Math.PI / 2, // Rotar la textura 90 grados
+                            center: { x: 0.5, y: 0.5 } // Asegurar que rote desde el centro
+                        }
                     );
                 }
             }

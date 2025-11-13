@@ -7,14 +7,18 @@ export default class LevelManager {
         // Bug 3 Fix: Define spawn points for each level
         this.spawnPoints = {
             1: { x: -17, y: 1.5, z: -67 }, // Punto de spawn para el Nivel 1
-            2: { x: -10, y: 1.5, z: -67 }, // Punto de spawn para el Nivel 2
-            3: { x: 0, y: 1.5, z: 0 }      // ✨ NUEVO: Punto de spawn para el Nivel 3 (ajusta estas coordenadas)
+            2: { x: 0, y: 1.5, z: 0 }, // Punto de spawn para el Nivel 2
+            3: { x: 10, y: 1.5, z: 10 }      // ✨ NUEVO: Punto de spawn para el Nivel 3 (ajusta estas coordenadas)
         };
 
-        // ✨ MEJORA: Configuración de enemigos por nivel desde .env con fallback
-        const enemiesLvl1 = parseInt(import.meta.env.VITE_ENEMIES_LVL_1, 10) || 5;
-        const enemiesLvl2 = parseInt(import.meta.env.VITE_ENEMIES_LVL_2, 10) || 10;
-        const enemiesLvl3 = parseInt(import.meta.env.VITE_ENEMIES_LVL_3, 10) || 15;
+        // ✨ CORRECCIÓN: Lectura más robusta de variables de entorno para evitar problemas con el valor '1' o '0'.
+        const getEnvCount = (envVar, defaultValue) => {
+            const value = parseInt(import.meta.env[envVar], 10);
+            return !isNaN(value) ? value : defaultValue;
+        };
+        const enemiesLvl1 = getEnvCount('VITE_ENEMIES_LVL_1', 2);
+        const enemiesLvl2 = getEnvCount('VITE_ENEMIES_LVL_2', 4);
+        const enemiesLvl3 = getEnvCount('VITE_ENEMIES_LVL_3', 6);
 
         this.enemiesPerLevel = {
             1: enemiesLvl1,
