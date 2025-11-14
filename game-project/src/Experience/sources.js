@@ -47,6 +47,11 @@ export default [
         path: '/textures/baked.jpg'
     },// desde aqui para abajo
     {
+        name: 'PersonajeModel',
+        type: 'gltfModel',
+        path: '/models/Personaje/Personaje.glb'  
+    },// desde aqui para abajo 
+    {
         "name": "bigrock4.001_lev1",
         "type": "gltfModel",
         "path": "/models/toycar/bigrock4.001_lev1.glb"
@@ -2255,5 +2260,5 @@ export default [
         "name": "rueda3_material.007_0_lev3",
         "type": "gltfModel",
         "path": "/models/toycar3/rueda3_material.007_0_lev3.glb"
-    } 
+    }
 ]

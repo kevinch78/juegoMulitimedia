@@ -2,16 +2,14 @@ export default class LevelManager {
     constructor(experience) {
         this.experience = experience;
         this.currentLevel = 1;
-        this.totalLevels = 3; // ✨ AHORA TENEMOS 3 NIVELES
+        this.totalLevels = 3; 
 
-        // Bug 3 Fix: Define spawn points for each level
         this.spawnPoints = {
-            1: { x: -17, y: 1.5, z: -67 }, // Punto de spawn para el Nivel 1
-            2: { x: 0, y: 1.5, z: 0 }, // Punto de spawn para el Nivel 2
-            3: { x: 10, y: 1.5, z: 10 }      // ✨ NUEVO: Punto de spawn para el Nivel 3 (ajusta estas coordenadas)
+            1: { x: -17, y: 1.5, z: -67 }, 
+            2: { x: 0, y: 1.5, z: 0 }, 
+            3: { x: 10, y: 1.5, z: 10 }      
         };
 
-        // ✨ CORRECCIÓN: Lectura más robusta de variables de entorno para evitar problemas con el valor '1' o '0'.
         const getEnvCount = (envVar, defaultValue) => {
             const value = parseInt(import.meta.env[envVar], 10);
             return !isNaN(value) ? value : defaultValue;

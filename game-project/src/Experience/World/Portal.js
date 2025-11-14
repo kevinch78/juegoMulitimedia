@@ -6,11 +6,12 @@ import Sound from './Sound.js'
 import FinalPrizeParticles from '../Utils/FinalPrizeParticles.js'
 
 export default class Portal {
-    constructor(experience, position) {
+    constructor(experience, position, level) {
         this.experience = experience
         this.scene = this.experience.scene
         this.time = this.experience.time
         this.position = position // Position where the portal should appear
+        this.level = level // ✨ Guardamos el nivel actual
         this.resources = this.experience.resources
 
         // ✨ CARGAR LOS NUEVOS RECURSOS: el modelo del portal y su textura
@@ -45,8 +46,10 @@ export default class Portal {
         this.model.position.y -= 1.2; // Bajarlo para que no flote
         this.model.position.x -= 1; // Moverlo un poco a la derecha
 
-        this.model.rotation.y = Math.PI; // Rotamos 180 grados para que "mire" hacia el centro
-
+        // // ✨ LÓGICA CONDICIONAL: Rotar el portal solo si estamos en el nivel 3
+        // if (this.level === 3) {
+        //     this.model.rotation.y = Math.PI; // Rotar 180 grados
+        // }
 
         // ✨ LÓGICA NUEVA: Aplicar materiales a las mallas correctas, como en el ejemplo del profesor
         const bakedMesh = this.model.getObjectByName('baked')
