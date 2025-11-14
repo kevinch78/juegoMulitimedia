@@ -1,10 +1,9 @@
 {
-  "buildCommand": "npm install && npm run build",
-  "outputDirectory": "dist",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
+  "buildCommand": "cd game-project && npm install && npm run build",
+  "outputDirectory": "game-project/dist",
+  "devCommand": "cd game-project && npm run dev",
+  "installCommand": "cd game-project && npm install",
   "framework": "vite",
-  "root": "game-project",
   "rewrites": [
     {
       "source": "/(.*)",
