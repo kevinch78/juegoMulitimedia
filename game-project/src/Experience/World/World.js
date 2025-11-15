@@ -196,24 +196,43 @@ export default class World {
                     }, 500)
                 }
             
+                // ✨ CORRECCIÓN: Guardar referencias antes del setTimeout
+                const modal = this.experience?.modal
+                const worldInstance = this
+            
                 // ⏳ Pequeño delay antes de mostrar el modal
                 setTimeout(() => {
-                    this.experience.modal.show({
-                        icon: '💀',
-                        message: '¡El enemigo te atrapó!\n¿Quieres intentarlo otra vez?',
-                        buttons: [
-                            {
-                                text: '🔁 Reintentar',
-                                onClick: () => {
-                                    this.resetCurrentLevel()
+                    // ✨ CORRECCIÓN: Verificar que el modal existe antes de mostrarlo
+                    if (!modal) {
+                        console.error('❌ Modal no disponible. No se puede mostrar el mensaje de derrota.');
+                        return;
+                    }
+                    
+                    if (typeof modal.show !== 'function') {
+                        console.error('❌ Modal.show no es una función.');
+                        return;
+                    }
+                    
+                    try {
+                        modal.show({
+                            icon: '💀',
+                            message: '¡El enemigo te atrapó!\n¿Quieres intentarlo otra vez?',
+                            buttons: [
+                                {
+                                    text: '🔁 Reintentar',
+                                    onClick: () => {
+                                        worldInstance.resetCurrentLevel()
+                                    }
+                                },
+                                {
+                                    text: '❌ Salir',
+                                    onClick: () => worldInstance.experience.resetGame()
                                 }
-                            },
-                            {
-                                text: '❌ Salir',
-                                onClick: () => this.experience.resetGame()
-                            }
-                        ]
-                    })
+                            ]
+                        })
+                    } catch (error) {
+                        console.error('❌ Error al mostrar modal de derrota:', error);
+                    }
                 }, 1000)
             }
         }
@@ -390,7 +409,7 @@ export default class World {
                 data = await res.json();
                 console.log(`📦 Datos del nivel ${level} cargados desde API`);
             } catch (error) {
-                console.warn(`⚠️ No se pudo conectar con el backend. Usando datos locales para nivel ${level}...`);
+                console.warn(`⚠️ No se pudo conectar con el backend. Usando datos locales para nivel ${level}...`, error.message);
                 const publicPath = (p) => {
                     const base = import.meta.env.BASE_URL || '/';
                     return `${base.replace(/\/$/, '')}/${p.replace(/^\//, '')}`;
@@ -541,22 +560,35 @@ export default class World {
             console.log(`🎯 Cuerpos físicos actuales en Physics World: ${physicsBodiesRemaining}`);
         }
 
+        // ✨ CORRECCIÓN: Limpiar premios usando prize.pivot (no prize.model)
         if (this.loader && this.loader.prizes.length > 0) {
+            let prizesRemoved = 0;
             this.loader.prizes.forEach(prize => {
-                if (prize.model) {
-                    this.scene.remove(prize.model);
-                    if (prize.model.geometry) prize.model.geometry.dispose();
-                    if (prize.model.material) {
-                        if (Array.isArray(prize.model.material)) {
-                            prize.model.material.forEach(mat => mat.dispose());
-                        } else {
-                            prize.model.material.dispose();
+                // Eliminar el pivot de la escena (es lo que realmente está en la escena)
+                if (prize.pivot) {
+                    // Limpiar todos los recursos del pivot y sus hijos
+                    prize.pivot.traverse((child) => {
+                        if (child.geometry) {
+                            child.geometry.dispose();
                         }
+                        if (child.material) {
+                            if (Array.isArray(child.material)) {
+                                child.material.forEach(mat => mat.dispose());
+                            } else {
+                                child.material.dispose();
+                            }
+                        }
+                    });
+                    
+                    // Remover el pivot de la escena
+                    if (prize.pivot.parent) {
+                        prize.pivot.parent.remove(prize.pivot);
                     }
+                    prizesRemoved++;
                 }
             });
             this.loader.prizes = [];
-            console.log('🎯 Premios del nivel anterior eliminados correctamente.');
+            console.log(`🎯 ${prizesRemoved} premios del nivel anterior eliminados correctamente.`);
         }
 
         // ✨ CORRECCIÓN: Asegurarse de eliminar los enemigos de la escena anterior
@@ -565,14 +597,14 @@ export default class World {
             this.enemies = [];
         }
 
-        this.finalPrizeActivated = false
-        this.loader?.prizes?.forEach(p => {
-            if (p.role === "finalPrize" && p.pivot) {
-                p.pivot.visible = false;
-                if (p.model) p.model.visible = false;
-                p.collected = false;
-            }
-        })
+        // ✨ CORRECCIÓN: Limpiar el portal si existe
+        if (this.portal) {
+            this.portal.destroy();
+            this.portal = null;
+        }
+
+        // Resetear flags de estado
+        this.finalPrizeActivated = false;
 
     }
 
@@ -668,7 +700,8 @@ export default class World {
         this.loader._processBlocks(blocks, preciseModels);
 
         this.loader.prizes.forEach(p => {
-            if (p.model) p.model.visible = (p.role !== 'finalPrize');
+            // ✨ CORRECCIÓN: Usar p.pivot en lugar de p.model
+            if (p.pivot) p.pivot.visible = (p.role !== 'finalPrize');
             p.collected = false;
         });
 

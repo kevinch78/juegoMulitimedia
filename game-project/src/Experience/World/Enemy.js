@@ -72,7 +72,7 @@ export default class Enemy {
         this.wallDetectionDistance = 3.0 // metros para detectar paredes
 
         // 🔊 Sonido de proximidad en loop
-        this.proximitySound = new Sound('/sounds/alert.ogg', {
+        this.proximitySound = new Sound('/sounds/zombie/zombie.mp3', {
             loop: true,
             volume: 0
         })
