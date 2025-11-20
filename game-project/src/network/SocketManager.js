@@ -7,46 +7,58 @@ export default class SocketManager {
         this.experience = experience
         this.scene = this.experience.scene
         this.robots = {}
+        
+        // Modo sin backend: no conectar socket si no hay VITE_API_URL
+        const noBackendMode = !import.meta.env.VITE_API_URL || import.meta.env.VITE_API_URL === '';
+        if (noBackendMode) {
+            console.log('🎮 Modo demo: Socket.IO deshabilitado');
+            this.socket = null;
+            return;
+        }
+        
         this.socket = io(import.meta.env.VITE_API_URL || 'http://localhost:3001', {
             autoConnect: true, // permite conectar cuando queramos
             reconnection: false // ❌ evita que reconecte automáticamente
         })
         console.log(import.meta.env.VITE_API_URL)
-        this.socket.on('connect', () => {
-            console.log('🔌 Conectado a servidor:', this.socket.id)
+        if (this.socket) {
+            this.socket.on('connect', () => {
+                console.log('🔌 Conectado a servidor:', this.socket.id)
 
-            const initialPos = this.experience.world.robot?.body?.position || { x: 0, y: 0, z: 0 }
-            this.socket.emit('new-player', { position: initialPos })
-        })
+                const initialPos = this.experience.world.robot?.body?.position || { x: 0, y: 0, z: 0 }
+                this.socket.emit('new-player', { position: initialPos })
+            })
+        }
 
-        this.socket.on('spawn-player', (data) => {
-            if (data.id === this.socket.id) return
+        if (this.socket) {
+            this.socket.on('spawn-player', (data) => {
+                if (data.id === this.socket.id) return
 
-            console.log('🧍 Nuevo jugador:', data.id)
-            this._createRemoteRobot(data.id, data.position)
-        })
+                console.log('🧍 Nuevo jugador:', data.id)
+                this._createRemoteRobot(data.id, data.position)
+            })
 
-        this.socket.on('players-update', (players) => {
-            const total = Object.keys(players).length
-            console.log('📡 Jugadores conectados:', total)
+            this.socket.on('players-update', (players) => {
+                const total = Object.keys(players).length
+                console.log('📡 Jugadores conectados:', total)
 
-            // ✅ Actualizar HUD si existe el menú
-            if (this.experience.menu?.playersLabel) {
-                this.experience.menu.playersLabel.innerText = `👥 Jugadores: ${total}`
-            }
-        })
+                // ✅ Actualizar HUD si existe el menú
+                if (this.experience.menu?.playersLabel) {
+                    this.experience.menu.playersLabel.innerText = `👥 Jugadores: ${total}`
+                }
+            })
 
 
 
-        this.socket.on('update-player', ({ id, position, rotation }) => {
-            const remote = this.robots[id]
-            if (id !== this.socket.id && remote) {
-                remote.model.position.set(position.x, position.y, position.z)
-                remote.model.rotation.y = rotation
-            }
-        })
+            this.socket.on('update-player', ({ id, position, rotation }) => {
+                const remote = this.robots[id]
+                if (id !== this.socket.id && remote) {
+                    remote.model.position.set(position.x, position.y, position.z)
+                    remote.model.rotation.y = rotation
+                }
+            })
 
-        this.socket.on('remove-player', (id) => {
+            this.socket.on('remove-player', (id) => {
             const data = this.robots[id]
           
             if (data) {
@@ -74,23 +86,25 @@ export default class SocketManager {
               delete this.robots[id]
             }
           })
-          
 
-        this.socket.on('existing-players', (others) => {
-            others.forEach(data => {
-                if (data.id !== this.socket.id && !this.robots[data.id]) {
-                    this._createRemoteRobot(data.id, data.position, data.rotation, data.color)
-                }
+            this.socket.on('existing-players', (others) => {
+                others.forEach(data => {
+                    if (data.id !== this.socket.id && !this.robots[data.id]) {
+                        this._createRemoteRobot(data.id, data.position, data.rotation, data.color)
+                    }
+                })
             })
-        })
+        }
 
     }
 
     sendTransform(position, rotationY) {
-        this.socket.emit('update-position', {
-            position,
-            rotation: rotationY
-        })
+        if (this.socket) {
+            this.socket.emit('update-position', {
+                position,
+                rotation: rotationY
+            })
+        }
     }
 
 
@@ -148,6 +162,9 @@ export default class SocketManager {
 
 
     update(delta) {
+        // Solo actualizar si hay socket conectado
+        if (!this.socket) return;
+        
         const robot = this.experience.world?.robot?.group
         if (robot) {
             const pos = robot.position
@@ -169,8 +186,10 @@ export default class SocketManager {
     }
 
     destroy() {
-        // ⛔️ Desconectar socket
-        this.socket.disconnect()
+        // ⛔️ Desconectar socket si existe
+        if (this.socket) {
+            this.socket.disconnect()
+        }
       
         // 🧹 Limpiar modelos y etiquetas
         for (const id in this.robots) {
