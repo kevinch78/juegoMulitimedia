@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import Experience from './Experience/Experience'
 import './styles/loader.css'
 import AuthForm from './components/AuthForm'
-import { verify, getToken, logout } from './services/authService'
+import { logout } from './services/authService'
 
 const App = () => {
   const canvasRef = useRef()
@@ -13,11 +13,46 @@ const App = () => {
   const [checking, setChecking] = useState(true)
   const [msg, setMsg] = useState('')
 
+  // Detectar si hay backend configurado
+  const hasBackend = import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== '';
+
   useEffect(() => {
-    // Ya no buscamos JWT previo: se debe iniciar sesión siempre
+    // Si no hay backend, iniciar directamente sin autenticación
+    if (!hasBackend) {
+      console.log('🎮 Modo sin backend: Iniciando juego directamente');
+      setAuthed(true);
+      setChecking(false);
+    } else {
+      // Con backend, requiere autenticación
+      setAuthed(false);
+      setChecking(false);
+    }
+  }, [hasBackend])
+
+  const handleLogout = useCallback(() => {
+    // Si no hay backend, no hay logout (simplemente recargar)
+    if (!hasBackend) {
+      window.location.reload();
+      return;
+    }
+    
+    // Destruir Experience y limpiar HUD antes de cerrar sesión
+    if (experienceRef.current) {
+      if (experienceRef.current.menu) {
+        experienceRef.current.menu.destroy()
+      }
+      if (experienceRef.current.destroy) {
+        experienceRef.current.destroy()
+      }
+      experienceRef.current = null
+    }
+    
+    logout()
     setAuthed(false)
-    setChecking(false)
-  }, [])
+    setLoading(true) // Resetear loading para la próxima sesión
+    setMsg('Sesión cerrada. ¡Vuelve pronto!')
+    setTimeout(() => setMsg(''), 1800)
+  }, [hasBackend])
 
   useEffect(() => {
     if(!authed) return
@@ -38,30 +73,12 @@ const App = () => {
         experience.destroy()
       }
     }
-  }, [authed])
-
-  function handleLogout() {
-    // Destruir Experience y limpiar HUD antes de cerrar sesión
-    if (experienceRef.current) {
-      if (experienceRef.current.menu) {
-        experienceRef.current.menu.destroy()
-      }
-      if (experienceRef.current.destroy) {
-        experienceRef.current.destroy()
-      }
-      experienceRef.current = null
-    }
-    
-    logout()
-    setAuthed(false)
-    setLoading(true) // Resetear loading para la próxima sesión
-    setMsg('Sesión cerrada. ¡Vuelve pronto!')
-    setTimeout(() => setMsg(''), 1800)
-  }
+  }, [authed, handleLogout])
 
   if (checking) return <div style={{marginTop: 50, textAlign:'center'}}>Verificando acceso...</div>
   if (msg) return <div style={{marginTop: 60, textAlign:'center', fontSize: '1.1em'}}>{msg}</div>
-  if (!authed) return <AuthForm onLogin={() => setAuthed(true)} />
+  // Solo mostrar AuthForm si hay backend configurado
+  if (!authed && hasBackend) return <AuthForm onLogin={() => setAuthed(true)} />
 
   return (
     <>

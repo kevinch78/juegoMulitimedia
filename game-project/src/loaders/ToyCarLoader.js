@@ -108,24 +108,34 @@ export default class ToyCarLoader {
 
             let blocks = [];
 
-            try {
-                const apiUrl = import.meta.env.VITE_API_URL + '/api/blocks';
-                const res = await fetch(apiUrl);
-
-                if (!res.ok) throw new Error('Conexión fallida');
-
-                blocks = await res.json();
-                console.log('Datos cargados desde la API:', blocks.length);
-                //console.log('🧩 Lista de bloques:', blocks.map(b => b.name))
-            } catch (apiError) {
-                console.warn('No se pudo conectar con la API. Cargando desde archivo local...');
+            // Modo sin backend: cargar directamente desde archivo local
+            const noBackendMode = !import.meta.env.VITE_API_URL || import.meta.env.VITE_API_URL === '';
+            
+            if (noBackendMode) {
+                console.log('🎮 Modo demo: Cargando bloques desde archivo local...');
                 const localRes = await fetch('/data/toy_car_blocks.json');
                 const allBlocks = await localRes.json();
-
-                // 🔍 Filtrar solo nivel 1
                 blocks = allBlocks.filter(b => b.level === 1);
                 console.log(`Datos cargados desde archivo local (nivel 1): ${blocks.length}`);
+            } else {
+                try {
+                    const apiUrl = import.meta.env.VITE_API_URL + '/api/blocks';
+                    const res = await fetch(apiUrl);
 
+                    if (!res.ok) throw new Error('Conexión fallida');
+
+                    blocks = await res.json();
+                    console.log('Datos cargados desde la API:', blocks.length);
+                    //console.log('🧩 Lista de bloques:', blocks.map(b => b.name))
+                } catch (apiError) {
+                    console.warn('No se pudo conectar con la API. Cargando desde archivo local...');
+                    const localRes = await fetch('/data/toy_car_blocks.json');
+                    const allBlocks = await localRes.json();
+
+                    // 🔍 Filtrar solo nivel 1
+                    blocks = allBlocks.filter(b => b.level === 1);
+                    console.log(`Datos cargados desde archivo local (nivel 1): ${blocks.length}`);
+                }
             }
 
             this._processBlocks(blocks, precisePhysicsModels);
