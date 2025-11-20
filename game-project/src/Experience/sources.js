@@ -22,6 +22,41 @@ export default [
         path: '/textures/dirt/normal.jpg'
     },
     {
+        name: 'asfaltoHeight',
+        type: 'texture',
+        path: '/textures/dirt/asfaltoHeight.png'
+    },
+    {
+        name: 'asfaltoColor',
+        type: 'texture',
+        path: '/textures/dirt/asfaltoColor.jpg'
+    },
+    {
+        name: 'ocean1',
+        type: 'texture',
+        path: '/textures/dirt/ocean1.jpg'
+    },
+    {
+        name: 'ocean2',
+        type: 'texture',
+        path: '/textures/dirt/ocean2.png'
+    },
+    {
+        name: 'ocean3',
+        type: 'texture',
+        path: '/textures/dirt/ocean3.jpg'
+    },
+    {
+        name: 'desertColor',
+        type: 'texture',
+        path: '/textures/dirt/desertColor.jpg'
+    },
+    {
+        name: 'desertHeight',
+        type: 'texture',
+        path: '/textures/dirt/desertHeight.png'
+    },// texturas fin
+    {
         name: 'foxModel',
         type: 'gltfModel',
         path: '/models/Fox/glTF/Fox.gltf'
@@ -982,11 +1017,6 @@ export default [
         "path": "/models/toycar3/coin_structure_detailed_lev2.006.005_lev1.010_lev3.glb"
     },
     {
-        "name": "coin_structure_detailed_lev2.006.005_lev1.011_lev3",
-        "type": "gltfModel",
-        "path": "/models/toycar3/coin_structure_detailed_lev2.006.005_lev1.011_lev3.glb"
-    },
-    {
         "name": "coin_structure_detailed_lev2.006.005_lev1_lev3",
         "type": "gltfModel",
         "path": "/models/toycar3/coin_structure_detailed_lev2.006.005_lev1_lev3.glb"
@@ -1075,6 +1105,26 @@ export default [
         "name": "cylinder001_13_-_default_0_lev3",
         "type": "gltfModel",
         "path": "/models/toycar3/cylinder001_13_-_default_0_lev3.glb"
+    },
+    {
+        "name": "node.001_lev3",
+        "type": "gltfModel",
+        "path": "/models/toycar3/node.001_lev3.glb"
+    },
+    {
+        "name": "node.002_lev3",
+        "type": "gltfModel",
+        "path": "/models/toycar3/node.002_lev3.glb"
+    },
+    {
+        "name": "node.003_lev3",
+        "type": "gltfModel",
+        "path": "/models/toycar3/node.003_lev3.glb"
+    },
+    {
+        "name": "node_lev3",
+        "type": "gltfModel",
+        "path": "/models/toycar3/node_lev3.glb"
     },
     {
         "name": "object_114.001_lev3",

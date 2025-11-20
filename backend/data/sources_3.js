@@ -55,11 +55,6 @@ export const sources = [
         "path": "/models/toycar3/coin_structure_detailed_lev2.006.005_lev1.010_lev3.glb"
     },
     {
-        "name": "coin_structure_detailed_lev2.006.005_lev1.011_lev3",
-        "type": "gltfModel",
-        "path": "/models/toycar3/coin_structure_detailed_lev2.006.005_lev1.011_lev3.glb"
-    },
-    {
         "name": "coin_structure_detailed_lev2.006.005_lev1_lev3",
         "type": "gltfModel",
         "path": "/models/toycar3/coin_structure_detailed_lev2.006.005_lev1_lev3.glb"
@@ -148,6 +143,26 @@ export const sources = [
         "name": "cylinder001_13_-_default_0_lev3",
         "type": "gltfModel",
         "path": "/models/toycar3/cylinder001_13_-_default_0_lev3.glb"
+    },
+    {
+        "name": "node.001_lev3",
+        "type": "gltfModel",
+        "path": "/models/toycar3/node.001_lev3.glb"
+    },
+    {
+        "name": "node.002_lev3",
+        "type": "gltfModel",
+        "path": "/models/toycar3/node.002_lev3.glb"
+    },
+    {
+        "name": "node.003_lev3",
+        "type": "gltfModel",
+        "path": "/models/toycar3/node.003_lev3.glb"
+    },
+    {
+        "name": "node_lev3",
+        "type": "gltfModel",
+        "path": "/models/toycar3/node_lev3.glb"
     },
     {
         "name": "object_114.001_lev3",

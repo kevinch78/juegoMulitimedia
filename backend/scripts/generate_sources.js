@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const modelsPath = path.join('C:/Users/chach/OneDrive/Escritorio/octavo/multi/Blender_Threejs_Mongo/game-project/public/models/toycar3');
+const modelsPath = path.join('C:/Users/chach/OneDrive/Escritorio/MEDIOSMULTIMEDIA23/juegoMulitimedia/game-project/public/models/toycar3');
 const outputPath = path.join(__dirname, '../data/sources_3.js');
 
 if (!fs.existsSync(modelsPath)) {

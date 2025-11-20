@@ -43,7 +43,7 @@ export default class World {
         }, 2000)
 
         this.resources.on('ready', async () => {
-            this.floor = new Floor(this.experience)
+            this.floor = new Floor(this.experience,1)
             this.environment = new Environment(this.experience)
 
             this.loader = new ToyCarLoader(this.experience)
@@ -444,6 +444,11 @@ export default class World {
             // ✨ CORRECCIÓN: Actualizar el HUD con la información del nuevo nivel
             this.experience.menu?.setStatus?.(`🎖️ Puntos: 0`);
             this.experience.menu?.setLevelStatus?.(level);
+            
+            if (this.floor) {
+                this.floor.updateLevel(level)
+                console.log(`🎨 Textura del piso actualizada para nivel ${level}`)
+            }
 
             if (data.blocks) {
                 const publicPath = (p) => {
